@@ -1,0 +1,117 @@
+<html>
+	<head>
+		<title>space</title>
+		<style>canvas { width: 100%; height: 100% }</style>
+	</head>
+	<body>
+		<!-- Laddar in three.js -->
+		<script src="https://rawgithub.com/mrdoob/three.js/master/build/three.js"></script>
+
+		<!-- Laddar in tween-biblioteket -->
+		<script type='text/javascript' src='/js/tween.min.js'></script>
+		<!-- Laddar in styrningen -->
+		<script src="/js/FirstPersonControls.js"></script>
+		<!-- Laddar in så det enkelt går att spela musik -->
+		<script src="/js/AudioObject.js"></script>
+
+		<script>
+			var camera, scene, renderer, planets, controls, clock, cube;
+	  
+	  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
+	  	function setup() {
+		     setupThreeJS();
+		     setupWorld();
+		     setupTween();
+		     requestAnimationFrame(function animate() {
+		     		renderer.render(scene, camera);
+		     		controls.update(clock.getDelta());
+		     		TWEEN.update();
+		     		requestAnimationFrame(animate);
+			}); 
+	 	}
+	  	 //Sätter inställningnarna för three.js
+	   	function setupThreeJS() {
+			scene = new THREE.Scene();
+			camera = new THREE.PerspectiveCamera(45, window.innerWidth /
+			window.innerHeight, 1, 10000);
+			camera.position.y = 10;
+			camera.position.z = 100;
+			renderer = new THREE.CanvasRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+
+			//Används för styrningen, som i detta fall är FirstPersonControls
+			clock = new THREE.Clock();
+			controls = new THREE.FirstPersonControls(camera);
+			controls.movementSpeed = 100;
+			controls.lookSpeed = 0.1;
+		}
+
+	   //Definerar världen och objekt som finns i den
+	   function setupWorld() {
+			var sphere = new THREE.IcosahedronGeometry(10, 1);
+			var mat_sphere = new THREE.MeshNormalMaterial( { color: 0x00ff00, wireframe:false } );
+			//Variabeln för att hålla ett objekt av flera sfärer, rymden
+			var space_geometry = new THREE.Geometry();
+
+		     // Klonar planeterna, slumpar position, lägger in alla i variablen som håller hela rymden
+		     for (var i = 0; i < 150; i++) {
+			    var planets = new THREE.Mesh(sphere.clone());
+				planets.position.y = Math.floor(Math.random() * 200 - 100) * 2;
+				planets.position.z = Math.floor(Math.random() * 200 - 100) * 2;
+				planets.position.x = Math.floor(Math.random() * 200 - 100) * 2;
+				THREE.GeometryUtils.merge(space_geometry, planets);
+			}
+
+			var space = new THREE.Mesh(space_geometry, mat_sphere);
+			scene.add(space);
+
+			//Ett kub-objekt för att examplifiera animationen
+			var cube_geometry = new THREE.CubeGeometry(10, 10, 10);
+			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+			cube = new THREE.Mesh( cube_geometry, material );
+			scene.add(cube);
+
+			//Sätter igång och loopar musiken
+			//var music = new THREE.AudioObject('mys.mp3', 0, 1, true);
+  			//scene.add(music);
+		}
+
+		//Anävnder ramverket Tween för att animera
+		function setupTween()
+		{
+			var update	= function(){
+				cube.position.x = current.x;
+			}
+			var current	= { x: 0 };
+
+			//Ta bort eventuella äldre tweens
+			TWEEN.removeAll();
+
+			//Sätter hur animationen ska se ut.
+			var easing	= TWEEN.Easing.Sinusoidal.InOut;
+
+			//Animation åt ena hållet
+			var tweenHead	= new TWEEN.Tween(current)
+			.to({x: 60}, 1000)
+			.easing(easing)
+			.onUpdate(update);
+
+			//Animation åt andra hållet
+			var tweenBack	= new TWEEN.Tween(current)
+			.to({x: 0}, 1000)
+			.easing(easing)
+			.onUpdate(update);
+
+			//Kedjar de båda animationerna
+			tweenHead.chain(tweenBack);
+			tweenBack.chain(tweenHead);
+
+			tweenHead.start();
+		}
+
+		setup();
+
+		</script>
+	</body>
+</html>
