@@ -8,11 +8,11 @@
 		<script src="https://rawgithub.com/mrdoob/three.js/master/build/three.js"></script>
 
 		<!-- Laddar in tween-biblioteket -->
-		<script type='text/javascript' src='/js/tween.min.js'></script>
+		<script type='text/javascript' src='./js/tween.min.js'></script>
 		<!-- Laddar in styrningen -->
-		<script src="/js/FirstPersonControls.js"></script>
+		<script src="./js/FirstPersonControls.js"></script>
 		<!-- Laddar in så det enkelt går att spela musik -->
-		<script src="/js/AudioObject.js"></script>
+		<script src="./js/AudioObject.js"></script>
 
 		<script>
 			var camera, scene, renderer, planets, controls, clock, cube;
@@ -35,8 +35,13 @@
 			camera = new THREE.PerspectiveCamera(45, window.innerWidth /
 			window.innerHeight, 1, 10000);
 			camera.position.y = 10;
-			camera.position.z = 100;
-			renderer = new THREE.CanvasRenderer();
+ 			camera.position.z = 100;
+
+			//Renderar i WebGL om webläsaren stödjer det
+			if (window.WebGLRenderingContext)
+				renderer = new THREE.WebGLRenderer();
+			else
+				renderer = new THREE.CanvasRenderer();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			document.body.appendChild(renderer.domElement);
 
@@ -49,6 +54,25 @@
 
 	   //Definerar världen och objekt som finns i den
 	   function setupWorld() {
+
+	   		//Skybox
+	   		//Laddar in sex bilder och applicerar som textur på 5000x5000x5000-kub
+	   		var imagePrefix = "skybox/space-";
+			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+			var imageSuffix = ".jpg";
+			var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
+			 
+			var materialArray = [];
+			for (var i = 0; i < 6; i++)
+				materialArray.push( new THREE.MeshBasicMaterial({
+					map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+					side: THREE.BackSide
+				}));
+			var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+			var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+			scene.add( skyBox );
+
+	   		//En sfär
 			var sphere = new THREE.IcosahedronGeometry(10, 1);
 			var mat_sphere = new THREE.MeshNormalMaterial( { color: 0x00ff00, wireframe:false } );
 			//Variabeln för att hålla ett objekt av flera sfärer, rymden
