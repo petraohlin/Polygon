@@ -19,13 +19,13 @@
 	  
 	  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
 	  	function setup() {
+		    setupThreeJS();
+		    setupWorld();
+		    setupTween();	
+		}; 
 
-			
-
-		     setupThreeJS();
-		     setupWorld();
-		     setupTween();
-		     requestAnimationFrame(function animate() {
+		function animation(){
+			requestAnimationFrame(function animate() {
 		     	for ( var i = 0, l = objects.length; i < l; i ++ ) {
 
 					var object = objects[i];
@@ -45,15 +45,20 @@
 			pointLight.position.y = particleLight.position.y;
 			pointLight.position.z = particleLight.position.z;
 
-			renderer.render(scene, camera);
-	     	controls.update(clock.getDelta());
-     		TWEEN.update();
+			render();
+			update();
+
      		requestAnimationFrame(animate);
-	     		
-			}); 
+			});
+	 	}
 
-		    
+	 	function render() {
+	 		renderer.render(scene, camera);
+	 	}
 
+	 	function update(){
+	 		controls.update(clock.getDelta());
+     		TWEEN.update();
 	 	}
 
 	  	 //Sätter inställningnarna för three.js
@@ -207,6 +212,7 @@
 
 
 		setup();
+		animation();
 
 		</script>
 	</body>
