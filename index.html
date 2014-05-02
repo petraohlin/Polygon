@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>space</title>
+		<title>Polygon</title>
 		<style>canvas { width: 100%; height: 100% }</style>
 	</head>
 	<body>
@@ -23,10 +23,17 @@
 		     setupWorld();
 		     setupTween();
 		     requestAnimationFrame(function animate() {
-		     		renderer.render(scene, camera);
-		     		controls.update(clock.getDelta());
-		     		TWEEN.update();
-		     		requestAnimationFrame(animate);
+		     	for ( var i = 0, l = objects.length; i < l; i ++ ) {
+
+					var object = objects[i];
+
+					object.rotation.x += 0.008;
+					object.rotation.y += 0.006;
+				}
+	     		renderer.render(scene, camera);
+	     		controls.update(clock.getDelta());
+	     		TWEEN.update();
+	     		requestAnimationFrame(animate);
 			}); 
 	 	}
 	  	 //Sätter inställningnarna för three.js
@@ -71,27 +78,35 @@
 			var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
 			var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 			scene.add( skyBox );
+      
+      		 // add subtle ambient lighting
+        	var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+        	scene.add(ambientLight);
+			
+			objects = [];
 
-	   		//En sfär
-			var sphere = new THREE.IcosahedronGeometry(10, 1);
-			var mat_sphere = new THREE.MeshNormalMaterial( { color: 0x00ff00, wireframe:false } );
-			//Variabeln för att hålla ett objekt av flera sfärer, rymden
-			var space_geometry = new THREE.Geometry();
+		     for (var i = 0; i < 1000; i++) {
+			    var planetRadius = Math.ceil((Math.random() * 50));
+                var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
+                var planetMaterial = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading});
+                var planet = new THREE.Mesh(planetGeometry, planetMaterial);
 
-		     // Klonar planeterna, slumpar position, lägger in alla i variablen som håller hela rymden
-		     for (var i = 0; i < 150; i++) {
-			    var planets = new THREE.Mesh(sphere.clone());
-				planets.position.y = Math.floor(Math.random() * 200 - 100) * 2;
-				planets.position.z = Math.floor(Math.random() * 200 - 100) * 2;
-				planets.position.x = Math.floor(Math.random() * 200 - 100) * 2;
-				THREE.GeometryUtils.merge(space_geometry, planets);
+				planet.position.y = Math.floor(Math.random() * 200 - 100) * 20;
+				planet.position.z = Math.floor(Math.random() * 200 - 100) * 20;
+				planet.position.x = Math.floor(Math.random() * 200 - 100) * 20;
+
+				planet.rotation.x = Math.random() * 200 - 100;
+				planet.rotation.y = Math.random() * 200 - 100;
+				planet.rotation.z = Math.random() * 200 - 100;
+				
+				objects.push(planet);
+				
+				scene.add(planet);
 			}
 
-			var space = new THREE.Mesh(space_geometry, mat_sphere);
-			scene.add(space);
 
 			//Ett kub-objekt för att examplifiera animationen
-			var cube_geometry = new THREE.CubeGeometry(10, 10, 10);
+			var cube_geometry = new THREE.BoxGeometry(10, 10, 10);
 			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 			cube = new THREE.Mesh( cube_geometry, material );
 			scene.add(cube);
@@ -99,6 +114,23 @@
 			//Sätter igång och loopar musiken
 			//var music = new THREE.AudioObject('mys.mp3', 0, 1, true);
   			//scene.add(music);
+
+  			//------LJUS------
+
+  			var ambiColor = "#0c0c0c";
+   			var ambientLight = new THREE.AmbientLight(ambiColor);
+
+   			scene.add(ambientLight);
+
+  			var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
+
+			directionalLight.position.x = Math.random() - 0.5;
+			directionalLight.position.y = Math.random() - 0.5;
+			directionalLight.position.z = Math.random() - 0.5;
+
+			directionalLight.position.normalize();
+
+			scene.add( directionalLight );
 		}
 
 		//Anävnder ramverket Tween för att animera
@@ -117,13 +149,13 @@
 
 			//Animation åt ena hållet
 			var tweenHead	= new TWEEN.Tween(current)
-			.to({x: 60}, 1000)
+			.to({x: 100}, 2000)
 			.easing(easing)
 			.onUpdate(update);
 
 			//Animation åt andra hållet
 			var tweenBack	= new TWEEN.Tween(current)
-			.to({x: 0}, 1000)
+			.to({x: -100}, 2000)
 			.easing(easing)
 			.onUpdate(update);
 
