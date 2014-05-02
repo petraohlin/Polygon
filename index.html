@@ -67,28 +67,38 @@
 	   		var imagePrefix = "skybox/space-";
 			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
 			var imageSuffix = ".jpg";
-			var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
+			var skyGeometry = new THREE.BoxGeometry( 5000, 5000, 5000 );	
 			 
-			var materialArray = [];
+			var skyMaterialArray = [];
 			for (var i = 0; i < 6; i++)
-				materialArray.push( new THREE.MeshBasicMaterial({
+				skyMaterialArray.push( new THREE.MeshBasicMaterial({
 					map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
 					side: THREE.BackSide
 				}));
-			var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+			var skyMaterial = new THREE.MeshFaceMaterial( skyMaterialArray );
 			var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 			scene.add( skyBox );
       
-      		 // add subtle ambient lighting
-        	var ambientLight = new THREE.AmbientLight(0x0c0c0c);
-        	scene.add(ambientLight);
-			
+			var materials = [];
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
+			materials.push(new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff, wireframe: true}));
+			materials.push(new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff, wireframe: true}));
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, transparent: true, shading: THREE.FlatShading}));
+			materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } ) );
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
+
 			objects = [];
 
 		     for (var i = 0; i < 1000; i++) {
 			    var planetRadius = Math.ceil((Math.random() * 50));
                 var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
-                var planetMaterial = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading});
+                //var planetMaterial = materials[Math.ceil(Math.random()*10)];
+				var planetMaterial = materials[5];
                 var planet = new THREE.Mesh(planetGeometry, planetMaterial);
 
 				planet.position.y = Math.floor(Math.random() * 200 - 100) * 20;
