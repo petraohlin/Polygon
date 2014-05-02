@@ -19,6 +19,9 @@
 	  
 	  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
 	  	function setup() {
+
+			
+
 		     setupThreeJS();
 		     setupWorld();
 		     setupTween();
@@ -27,15 +30,32 @@
 
 					var object = objects[i];
 
-					object.rotation.x += 0.008;
-					object.rotation.y += 0.006;
+					object.rotation.x += Math.random()*0.01;
+					object.rotation.y += 0.01;
 				}
-	     		renderer.render(scene, camera);
-	     		controls.update(clock.getDelta());
-	     		TWEEN.update();
-	     		requestAnimationFrame(animate);
+
+				
+			var timer = 0.0001 * Date.now();
+
+	     	particleLight.position.x = Math.sin( timer * 7 ) * 1000;
+			particleLight.position.y = Math.cos( timer * 5 ) * 1000;
+			particleLight.position.z = Math.cos( timer * 3 ) * 1000;
+
+			pointLight.position.x = particleLight.position.x;
+			pointLight.position.y = particleLight.position.y;
+			pointLight.position.z = particleLight.position.z;
+
+			renderer.render(scene, camera);
+	     	controls.update(clock.getDelta());
+     		TWEEN.update();
+     		requestAnimationFrame(animate);
+	     		
 			}); 
+
+		    
+
 	 	}
+
 	  	 //Sätter inställningnarna för three.js
 	   	function setupThreeJS() {
 			scene = new THREE.Scene();
@@ -78,6 +98,7 @@
 			var skyMaterial = new THREE.MeshFaceMaterial( skyMaterialArray );
 			var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 			scene.add( skyBox );
+
       
 			var materials = [];
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
@@ -92,18 +113,18 @@
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 
+
 			objects = [];
 
 		     for (var i = 0; i < 1000; i++) {
-			    var planetRadius = Math.ceil((Math.random() * 50));
+			    var planetRadius = Math.ceil((Math.random() * 80));
                 var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
-                //var planetMaterial = materials[Math.ceil(Math.random()*10)];
-				var planetMaterial = materials[5];
+                var planetMaterial = materials[Math.ceil(Math.random()*(materials.length-1))];
                 var planet = new THREE.Mesh(planetGeometry, planetMaterial);
 
-				planet.position.y = Math.floor(Math.random() * 200 - 100) * 20;
-				planet.position.z = Math.floor(Math.random() * 200 - 100) * 20;
-				planet.position.x = Math.floor(Math.random() * 200 - 100) * 20;
+				planet.position.y = Math.floor(Math.random() * 200 - 100) * 15;
+				planet.position.z = Math.floor(Math.random() * 200 - 100) * 15;
+				planet.position.x = Math.floor(Math.random() * 200 - 100) * 10;
 
 				planet.rotation.x = Math.random() * 200 - 100;
 				planet.rotation.y = Math.random() * 200 - 100;
@@ -134,13 +155,21 @@
 
   			var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
 
-			directionalLight.position.x = Math.random() - 0.5;
-			directionalLight.position.y = Math.random() - 0.5;
-			directionalLight.position.z = Math.random() - 0.5;
+			directionalLight.position.x = Math.random() * 400;
+			directionalLight.position.y = Math.random() * 400;
+			directionalLight.position.z = Math.random() * 400;
 
 			directionalLight.position.normalize();
 
 			scene.add( directionalLight );
+
+			//stjärna som upplevs lysa
+			particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+			scene.add( particleLight );
+
+			//ljuset åt stjärnan
+			pointLight = new THREE.PointLight( 0xffffff, 1 );
+			scene.add( pointLight );
 		}
 
 		//Anävnder ramverket Tween för att animera
@@ -175,6 +204,7 @@
 
 			tweenHead.start();
 		}
+
 
 		setup();
 
