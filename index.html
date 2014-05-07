@@ -99,7 +99,8 @@
 			var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 			scene.add( skyBox );
 
-      
+
+      		//Array med de olika materialen som sfärerna kan få
 			var materials = [];
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
@@ -113,14 +114,35 @@
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 
+			 
+			//geometrin som används då materialet är facematerial
+			var geometry_pieces = new THREE.SphereGeometry( 25, 32, 16 ); 
+
+				for ( var i = 0, l = geometry_pieces.faces.length; i < l; i ++ ) {
+
+					var face = geometry_pieces.faces[ i ];
+					face.materialIndex = Math.floor( Math.random() * materials.length );
+
+				}
+
+				geometry_pieces.materials = materials;
+			
+			materials.push( new THREE.MeshFaceMaterial( materials ) );
+
 
 			objects = [];
 
 		     for (var i = 0; i < 1000; i++) {
+
 			    var planetRadius = Math.ceil((Math.random() * 80));
-                var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
+			    var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
+
                 var planetMaterial = materials[Math.ceil(Math.random()*(materials.length-1))];
-                var planet = new THREE.Mesh(planetGeometry, planetMaterial);
+
+                //om materialet är faces, väljd då pieces, annars vanliga planet-geometryn.
+                var geometry = (planetMaterial instanceof THREE.MeshFaceMaterial) ? geometry_pieces : planetGeometry;
+
+                var planet = new THREE.Mesh(geometry, planetMaterial);
 
 				planet.position.y = Math.floor(Math.random() * 200 - 100) * 15;
 				planet.position.z = Math.floor(Math.random() * 200 - 100) * 15;
