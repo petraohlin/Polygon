@@ -13,19 +13,22 @@
 		<script src="./js/FirstPersonControls.js"></script>
 		<!-- Laddar in så det enkelt går att spela musik -->
 		<script src="./js/AudioObject.js"></script>
+		<script src="./js/ParticleEngine.js"></script>
+		<script src="./js/Stats.js"></script>
 
 		<script>
-			var camera, scene, renderer, planets, controls, clock, cube;
+			var camera, scene, stats, renderer, planets, controls, clock, cube;
 	  
 	  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
 	  	function setup() {
+		    setupThreeJS();
+		    setupStats();
+		    setupWorld();
+		    setupTween();
+		}; 
 
-			
-
-		     setupThreeJS();
-		     setupWorld();
-		     setupTween();
-		     requestAnimationFrame(function animate() {
+		function animation(){
+			requestAnimationFrame(function animate() {
 		     	for ( var i = 0, l = objects.length; i < l; i ++ ) {
 
 					var object = objects[i];
@@ -45,20 +48,31 @@
 			pointLight.position.y = particleLight.position.y;
 			pointLight.position.z = particleLight.position.z;
 
-			renderer.render(scene, camera);
-	     	controls.update(clock.getDelta());
-     		TWEEN.update();
+			render();
+			update();
+
      		requestAnimationFrame(animate);
-	     		
-			}); 
+			});
+	 	}
 
-		    
+	 	function render() {
+	 		renderer.render(scene, camera);
+	 	}
 
+	 	function update(){
+	 		//Particle field update variables
+			//var dt = clock.getDelta();
+			//engine.update( dt * 0.5 );
+
+			stats.update();
+	 		controls.update(clock.getDelta());
+     		TWEEN.update();
 	 	}
 
 	  	 //Sätter inställningnarna för three.js
 	   	function setupThreeJS() {
 			scene = new THREE.Scene();
+			
 			camera = new THREE.PerspectiveCamera(45, window.innerWidth /
 			window.innerHeight, 1, 10000);
 			camera.position.y = 10;
@@ -79,8 +93,21 @@
 			controls.lookSpeed = 0.1;
 		}
 
-	   //Definerar världen och objekt som finns i den
-	   function setupWorld() {
+		function setupStats(){
+			stats = new Stats();
+
+ 			stats.setMode(0); // 0: fps, 1: ms
+
+			// Align top-left
+			stats.domElement.style.position = 'absolute';
+			stats.domElement.style.left = '0px';
+			stats.domElement.style.top = '0px';
+
+			document.body.appendChild( stats.domElement );
+		}
+
+	   	//Definerar världen och objekt som finns i den
+	   	function setupWorld() {
 
 	   		//Skybox
 	   		//Laddar in sex bilder och applicerar som textur på 5000x5000x5000-kub
@@ -99,8 +126,45 @@
 			var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 			scene.add( skyBox );
 
+			//Particle field
+			/*this.engine = new ParticleEngine();
 
-      		//Array med de olika materialen som sfärerna kan få
+			//Particle field parameters
+			parameters =
+				{
+					positionStyle    : Type.CUBE,
+					positionBase     : new THREE.Vector3( 0, 200, 0 ),
+					positionSpread   : new THREE.Vector3( 600, 400, 600 ),
+
+					velocityStyle    : Type.CUBE,
+					velocityBase     : new THREE.Vector3( 0, 0, 0 ),
+					velocitySpread   : new THREE.Vector3( 0.5, 0.5, 0.5 ), 
+					
+					angleBase               : 0,
+					angleSpread             : 720,
+					angleVelocityBase       : 0,
+					angleVelocitySpread     : 4,
+
+					particleTexture : THREE.ImageUtils.loadTexture( 'images/spikey.png' ),
+					
+					sizeBase    : 10.0,
+					sizeSpread  : 2.0,				
+					colorBase   : new THREE.Vector3(0.15, 1.0, 0.9), // H,S,L
+					colorSpread : new THREE.Vector3(0.00, 0.0, 0.2),
+					opacityBase : 1,
+
+					particlesPerSecond : 20000,
+					particleDeathAge   : 60.0,		
+					emitterDeathAge    : 0.1
+				},
+
+			engine.setValues( parameters );
+			engine.initialize();*/
+
+			//Dimma
+			//scene.fog = new THREE.Fog( 0xffffff, 0.01, 6000 );
+
+			//Array med de olika materialen som sfärerna kan få
 			var materials = [];
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
@@ -157,6 +221,23 @@
 				scene.add(planet);
 			}
 
+			//Ladda in modell
+			var jsonLoader = new THREE.JSONLoader();
+	        jsonLoader.load( "models/temp.js", addModelToScene );
+	        // addModelToScene function is called back after model has loaded
+	          
+	        var ambientLight = new THREE.AmbientLight(0x111111);
+	        scene.add(ambientLight);
+	          
+
+	        function addModelToScene( geometry, materials ) 
+	        {
+	          var material = new THREE.MeshFaceMaterial( materials );
+	          android = new THREE.Mesh( geometry, material );
+	          android.scale.set(100,100,100);
+	          scene.add( android );
+	        }
+
 
 			//Ett kub-objekt för att examplifiera animationen
 			var cube_geometry = new THREE.BoxGeometry(10, 10, 10);
@@ -169,7 +250,6 @@
   			//scene.add(music);
 
   			//------LJUS------
-
   			var ambiColor = "#0c0c0c";
    			var ambientLight = new THREE.AmbientLight(ambiColor);
 
@@ -227,8 +307,8 @@
 			tweenHead.start();
 		}
 
-
 		setup();
+		animation();
 
 		</script>
 	</body>
