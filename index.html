@@ -61,8 +61,8 @@
 
 	 	function update(){
 	 		//Particle field update variables
-			var dt = clock.getDelta();
-			engine.update( dt * 0.5 );
+			//var dt = clock.getDelta();
+			//engine.update( dt * 0.5 );
 
 			stats.update();
 	 		controls.update(clock.getDelta());
@@ -127,7 +127,7 @@
 			scene.add( skyBox );
 
 			//Particle field
-			this.engine = new ParticleEngine();
+			/*this.engine = new ParticleEngine();
 
 			//Particle field parameters
 			parameters =
@@ -159,7 +159,7 @@
 				},
 
 			engine.setValues( parameters );
-			engine.initialize();
+			engine.initialize();*/
 
 			//Dimma
 			//scene.fog = new THREE.Fog( 0xffffff, 0.01, 6000 );
@@ -198,6 +198,23 @@
 				
 				scene.add(planet);
 			}
+
+			//Ladda in modell
+			var jsonLoader = new THREE.JSONLoader();
+	        jsonLoader.load( "models/temp.js", addModelToScene );
+	        // addModelToScene function is called back after model has loaded
+	          
+	        var ambientLight = new THREE.AmbientLight(0x111111);
+	        scene.add(ambientLight);
+	          
+
+	        function addModelToScene( geometry, materials ) 
+	        {
+	          var material = new THREE.MeshFaceMaterial( materials );
+	          android = new THREE.Mesh( geometry, material );
+	          android.scale.set(100,100,100);
+	          scene.add( android );
+	        }
 
 
 			//Ett kub-objekt för att examplifiera animationen
