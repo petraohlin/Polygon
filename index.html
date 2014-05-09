@@ -29,16 +29,35 @@
 
 		function animation(){
 			requestAnimationFrame(function animate() {
+				
+				var timer = 0.0001 * Date.now();
+
 		     	for ( var i = 0, l = objects.length; i < l; i ++ ) {
 
 					var object = objects[i];
-
-					object.rotation.x += Math.random()*0.01;
-					object.rotation.y += 0.01;
+					//Var 30:onde blir bouncy
+					if(i % 30 == 0)
+					{
+						object.scale.x = Math.pow(Math.sin(timer * 20), 2) + 0.95;
+						object.scale.y = object.scale.x;
+						object.scale.z = object.scale.x;
+					}
+					else 
+					{	
+						object.rotation.x += Math.random()*0.01;
+						object.rotation.y += 0.01;
+					}
+							
 				}
 
 				
-			var timer = 0.0001 * Date.now();
+			var test = objects[100];
+			test.rotation.x = 0;
+			test.rotation.y = 0;
+
+			test.position.x = Math.cos( timer * 4 ) * 100;
+			test.position.y = Math.sin( timer * 8 ) * 100;
+			test.position.z = 10;
 
 	     	particleLight.position.x = Math.sin( timer * 7 ) * 1000;
 			particleLight.position.y = Math.cos( timer * 5 ) * 1000;
@@ -221,22 +240,22 @@
 				scene.add(planet);
 			}
 
-			//Ladda in modell
-			var jsonLoader = new THREE.JSONLoader();
-	        jsonLoader.load( "models/temp.js", addModelToScene );
-	        // addModelToScene function is called back after model has loaded
+			// //Ladda in modell
+			// var jsonLoader = new THREE.JSONLoader();
+	  //       jsonLoader.load( "models/temp.js", addModelToScene );
+	  //       // addModelToScene function is called back after model has loaded
 	          
-	        var ambientLight = new THREE.AmbientLight(0x111111);
-	        scene.add(ambientLight);
+	  //       var ambientLight = new THREE.AmbientLight(0x111111);
+	  //       scene.add(ambientLight);
 	          
 
-	        function addModelToScene( geometry, materials ) 
-	        {
-	          var material = new THREE.MeshFaceMaterial( materials );
-	          android = new THREE.Mesh( geometry, material );
-	          android.scale.set(100,100,100);
-	          scene.add( android );
-	        }
+	  //       function addModelToScene( geometry, materials ) 
+	  //       {
+	  //         var material = new THREE.MeshFaceMaterial( materials );
+	  //         android = new THREE.Mesh( geometry, material );
+	  //         android.scale.set(100,100,100);
+	  //         scene.add( android );
+	  //       }
 
 
 			//Ett kub-objekt för att examplifiera animationen
