@@ -215,7 +215,7 @@
 
 			objects = [];
 
-		     for (var i = 0; i < 1000; i++) {
+		    for (var i = 0; i < 1000; i++) {
 
 			    var planetRadius = Math.ceil((Math.random() * 80));
 			    var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
@@ -240,22 +240,28 @@
 				scene.add(planet);
 			}
 
-			// //Ladda in modell
-			// var jsonLoader = new THREE.JSONLoader();
-	  //       jsonLoader.load( "models/temp.js", addModelToScene );
-	  //       // addModelToScene function is called back after model has loaded
+			// Ladda in modell
+			var jsonLoader = new THREE.JSONLoader();
+	  	    jsonLoader.load( "./models/island1.js", addModelToScene );
+	        // addModelToScene function is called back after model has loaded
 	          
-	  //       var ambientLight = new THREE.AmbientLight(0x111111);
-	  //       scene.add(ambientLight);
+	        var ambientLight = new THREE.AmbientLight(0x111111);
+	        scene.add(ambientLight);
 	          
 
-	  //       function addModelToScene( geometry, materials ) 
-	  //       {
-	  //         var material = new THREE.MeshFaceMaterial( materials );
-	  //         android = new THREE.Mesh( geometry, material );
-	  //         android.scale.set(100,100,100);
-	  //         scene.add( android );
-	  //       }
+	        function addModelToScene( geometry, materials ) 
+	        {
+		        var material = new THREE.MeshFaceMaterial( materials );
+
+		        for ( var i = 0; i < materials.length; i ++ ) {
+
+					materials[i].shading = THREE.FlatShading;
+				}
+
+		        model = new THREE.Mesh( geometry, material );
+		        model.scale.set(50,50,50);
+		        scene.add( model );
+	        }
 
 
 			//Ett kub-objekt för att examplifiera animationen
