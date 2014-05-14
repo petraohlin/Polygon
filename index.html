@@ -240,55 +240,52 @@
 				scene.add(planet);
 			}
 
-			// Ladda in modell
-			var jsonLoader = new THREE.JSONLoader();
-	  	    jsonLoader.load( "./models/island1.js", addModelToScene );
-	        // addModelToScene function is called back after model has loaded
-	          
-	        var ambientLight = new THREE.AmbientLight(0x111111);
-	        scene.add(ambientLight);
-	          
-
-	        function addModelToScene( geometry, materials ) 
-	        {
-		        var material = new THREE.MeshFaceMaterial( materials );
-
-		        for ( var i = 0; i < materials.length; i ++ ) {
-
-					materials[i].shading = THREE.FlatShading;
-				}
-
-		        model = new THREE.Mesh( geometry, material );
-		        model.scale.set(50,50,50);
-		        scene.add( model );
-	        }
-
-
 			//Ett kub-objekt för att examplifiera animationen
 			var cube_geometry = new THREE.BoxGeometry(10, 10, 10);
 			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 			cube = new THREE.Mesh( cube_geometry, material );
 			scene.add(cube);
 
+			//----- MODEL -----
+			//Skapa JSON-inladdare
+			var jsonLoader = new THREE.JSONLoader();
+
+			//Ladda in modeller
+	  	    jsonLoader.load( "./models/island1.js", addModelToScene1 );
+	  	   	jsonLoader.load( "./models/snowWorld1.js", addModelToScene2 );
+	  	   	jsonLoader.load( "./models/planetFarm.js", addModelToScene3 );
+
+	  	    //jsonLoader.load( "./models/snowWorld1.js", addModelToScene, 50 );
+
+			//----- MUSIK -----
 			//Sätter igång och loopar musiken
 			//var music = new THREE.AudioObject('mys.mp3', 0, 1, true);
   			//scene.add(music);
 
-  			//------LJUS------
+  			//----- LJUS -----
+  			//Ambient light 1
   			var ambiColor = "#0c0c0c";
    			var ambientLight = new THREE.AmbientLight(ambiColor);
-
    			scene.add(ambientLight);
 
-  			var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
+   			//Ambient light 2
+   			var ambientLight = new THREE.AmbientLight(0x111111);
+	        scene.add(ambientLight);
 
+   			//Directional light
+  			var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
 			directionalLight.position.x = Math.random() * 400;
 			directionalLight.position.y = Math.random() * 400;
 			directionalLight.position.z = Math.random() * 400;
-
 			directionalLight.position.normalize();
-
 			scene.add( directionalLight );
+
+			//Hemisphere light
+			hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+			hemiLight.color.setHSL( 0.6, 1, 0.6 );
+			hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+			hemiLight.position.set( 0, 500, 0 );
+			scene.add( hemiLight );
 
 			//stjärna som upplevs lysa
 			particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
@@ -298,6 +295,53 @@
 			pointLight = new THREE.PointLight( 0xffffff, 1 );
 			scene.add( pointLight );
 		}
+
+		//Skapar modell i scenen med flat material
+		function addModelToScene1( geometry, materials ) 
+	        {
+		        var material = new THREE.MeshFaceMaterial( materials );
+
+		        for ( var i = 0; i < materials.length; i ++ ) {
+
+					materials[i].shading = THREE.FlatShading;
+				}
+
+		        model = new THREE.Mesh( geometry, material );
+		        model.scale.set(12.5, 12.5, 12.5);
+		        scene.add( model );
+	    }
+
+	    //Skapar modell i scenen med flat material
+		function addModelToScene2( geometry, materials ) 
+	        {
+		        var material = new THREE.MeshFaceMaterial( materials );
+
+		        for ( var i = 0; i < materials.length; i ++ ) {
+
+					materials[i].shading = THREE.FlatShading;
+				}
+
+		        model = new THREE.Mesh( geometry, material );
+		        model.scale.set(15, 15, 15);
+		        model.position.set(700,-200,0);
+		        scene.add( model );
+	    }
+
+	    //Skapar modell i scenen med flat material
+		function addModelToScene3( geometry, materials ) 
+	        {
+		        var material = new THREE.MeshFaceMaterial( materials );
+
+		        for ( var i = 0; i < materials.length; i ++ ) {
+
+					materials[i].shading = THREE.FlatShading;
+				}
+
+		        model = new THREE.Mesh( geometry, material );
+		        model.scale.set(15, 15, 15);
+		        model.position.set(-700,200,0);
+		        scene.add( model );
+	    }
 
 		//Anävnder ramverket Tween för att animera
 		function setupTween()
