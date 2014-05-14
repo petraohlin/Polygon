@@ -24,7 +24,7 @@
 		    setupThreeJS();
 		    setupStats();
 		    setupWorld();
-		    setupTween();
+		    //setupTween();
 		}; 
 
 		function animation(){
@@ -38,9 +38,25 @@
 					//Var 30:onde blir bouncy
 					if(i % 30 == 0)
 					{
-						object.scale.x = Math.pow(Math.sin(timer * 20), 2) + 0.95;
+						object.scale.x = 0.25*Math.pow(Math.sin(timer * 20), 2) + 1;
 						object.scale.y = object.scale.x;
 						object.scale.z = object.scale.x;
+					}
+					//alla else-if satser ger var 50, 70, 80:onde olika omloppsbanor
+					else if(i % 50 == 0) 
+					{
+						object.position.x += Math.cos( timer * 4 );
+						object.position.y += Math.sin( timer * 4 );
+					}
+					else if(i % 70 == 0) 
+					{
+						object.position.x += Math.cos( timer * 2 );
+						object.position.z += Math.sin( timer * 2 );
+					}
+					else if(i % 80 == 0) 
+					{
+						object.position.z += Math.cos( timer * 7 );
+						object.position.y += Math.sin( timer * 7 );
 					}
 					else 
 					{	
@@ -51,14 +67,6 @@
 				}
 
 				
-			var test = objects[100];
-			test.rotation.x = 0;
-			test.rotation.y = 0;
-
-			test.position.x = Math.cos( timer * 4 ) * 100;
-			test.position.y = Math.sin( timer * 8 ) * 100;
-			test.position.z = 10;
-
 	     	particleLight.position.x = Math.sin( timer * 7 ) * 1000;
 			particleLight.position.y = Math.cos( timer * 5 ) * 1000;
 			particleLight.position.z = Math.cos( timer * 3 ) * 1000;
@@ -229,7 +237,7 @@
 
 				planet.position.y = Math.floor(Math.random() * 200 - 100) * 15;
 				planet.position.z = Math.floor(Math.random() * 200 - 100) * 15;
-				planet.position.x = Math.floor(Math.random() * 200 - 100) * 10;
+				planet.position.x = Math.floor(Math.random() * 200 - 100) * 15;
 
 				planet.rotation.x = Math.random() * 200 - 100;
 				planet.rotation.y = Math.random() * 200 - 100;
@@ -262,7 +270,7 @@
 			var cube_geometry = new THREE.BoxGeometry(10, 10, 10);
 			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 			cube = new THREE.Mesh( cube_geometry, material );
-			scene.add(cube);
+			//scene.add(cube);
 
 			//Sätter igång och loopar musiken
 			//var music = new THREE.AudioObject('mys.mp3', 0, 1, true);
