@@ -223,6 +223,7 @@
 
 			objects = [];
 
+
 		    for (var i = 0; i < 250; i++) {
 
 			    var planetRadius = Math.ceil((Math.random() * 80));
@@ -330,6 +331,7 @@
 		        
 	    	}
 
+
 	    //Skapar modell i scenen med flat material
 		function addModelToScene2( geometry, materials ) 
 	        {
@@ -343,7 +345,7 @@
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(15, 15, 15);
 		        model.position.set(700,-200,0);
-		       
+
 		       	for(var i = 0; i < 3; i++)
 		        {
 		        	var temp = model.clone();
@@ -353,6 +355,7 @@
 
 					scene.add(temp);
 		        }
+
 	    }
 
 	    //Skapar modell i scenen med flat material
