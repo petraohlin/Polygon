@@ -16,9 +16,12 @@
 		<script src="./js/AudioObject.js"></script>
 		<script src="./js/ParticleEngine.js"></script>
 		<script src="./js/Stats.js"></script>
+		<script src="./js/Sound.js"></script>
 
 		<script>
-			var camera, scene, stats, renderer, planets, controls, clock, cube;
+			var camera, scene, stats, renderer, planets, controls, clock, cube, soundmesh1, soundmesh2, soundmesh3, sound1, sound2, sound3;
+
+
 	  
 	  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
 	  	function setup() {
@@ -90,6 +93,11 @@
 	 	}
 
 	 	function update(){
+
+	 		sound1.update( camera );
+			sound2.update( camera );
+			sound3.update( camera );
+
 	 		//Particle field update variables
 			var dt = clock.getDelta();
 			engine.update( dt * 0.5 );
@@ -285,9 +293,35 @@
 	  	    //jsonLoader.load( "./models/snowWorld1.js", addModelToScene, 50 );
 
 			//----- MUSIK -----
-			//Sätter igång och loopar musiken
-			//var music = new THREE.AudioObject('mys.mp3', 0, 1, true);
-  			//scene.add(music);
+
+			// Soundsfärer och soundvariabler kopplade till dessa
+			// Svärerna har samma koordinater som världarna
+
+			var soundmesh1 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh1.position.set( 0, 0, 0 );
+			scene.add( soundmesh1 );
+
+			sound1 = new Sound( [ 'music/mys.mp3', 'music/mys.mp3' ], 700, 1 );
+			sound1.position.copy( soundmesh1.position );
+			sound1.play();
+
+
+			var soundmesh2 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh2.position.set( 1000,-300,100);
+			scene.add( soundmesh2 );
+
+			sound2 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
+			sound2.position.copy( soundmesh2.position );
+			sound2.play();
+
+			var soundmesh3 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh3.position.set(700,500,700);
+			scene.add( soundmesh3 );
+
+			sound3 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
+			sound3.position.copy( soundmesh3.position );
+			sound3.play();
+
 
   			//----- LJUS -----
   			//Ambient light 1
@@ -362,6 +396,11 @@
 
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(15, 15, 15);
+
+		        model.position.set(1000,-300,100);
+		        scene.add( model );
+
+		        /*Om vi vill ha flera av samma
 		        model.position.set(700,-200,0);
 
 		       	for(var i = 0; i < 3; i++)
@@ -372,7 +411,7 @@
 					temp.position.x = Math.floor(Math.random() * 200 - 100) * 15;
 
 					scene.add(temp);
-		        }
+		        }*/
 
 	    }
 
@@ -388,17 +427,10 @@
 
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(15, 15, 15);
-		        model.position.set(-700,200,0);
-		        
-		        for(var i = 0; i < 3; i++)
-		        {
-		        	var temp = model.clone();
-		        	temp.position.y = Math.floor(Math.random() * 200 - 100) * 15;
-					temp.position.z = Math.floor(Math.random() * 200 - 100) * 15;
-					temp.position.x = Math.floor(Math.random() * 200 - 100) * 15;
 
-					scene.add(temp);
-		        }
+		        model.position.set(-700,500,700);
+		        scene.add( model );
+
 	    }
 
 		//Anävnder ramverket Tween för att animera
