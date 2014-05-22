@@ -98,6 +98,7 @@
 	 		controls.update(dt);
      		TWEEN.update();
 
+     		//Spärrar kamera att ta sig utanför skybox
      		if ( camera.position.x > 2000 || camera.position.y > 2000 || camera.position.z > 2000)
 			{
 				camera.position.x = 0;
