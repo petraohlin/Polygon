@@ -11,6 +11,7 @@
 		<script type='text/javascript' src='./js/tween.min.js'></script>
 		<!-- Laddar in styrningen -->
 		<script src="./js/FirstPersonControls.js"></script>
+		<script src="./js/FlyControls.js"></script>
 		<!-- Laddar in så det enkelt går att spela musik -->
 		<script src="./js/AudioObject.js"></script>
 		<script src="./js/ParticleEngine.js"></script>
@@ -66,6 +67,8 @@
 							
 				}
 
+			
+
 				
 	     	particleLight.position.x = Math.sin( timer * 7 ) * 1000;
 			particleLight.position.y = Math.cos( timer * 5 ) * 1000;
@@ -94,6 +97,20 @@
 			stats.update();
 	 		controls.update(dt);
      		TWEEN.update();
+
+     		if ( camera.position.x > 2000 || camera.position.y > 2000 || camera.position.z > 2000)
+			{
+				camera.position.x = 0;
+				camera.position.y = 0;
+				camera.position.z = -2000;
+			}
+
+			if ( camera.position.x < -2000 || camera.position.y < -2000 || camera.position.z < -2000)
+			{
+				camera.position.x = 0;
+				camera.position.y = 0;
+				camera.position.z = 2000;
+			}
 	 	}
 
 	  	 //Sätter inställningnarna för three.js
@@ -102,8 +119,8 @@
 			
 			camera = new THREE.PerspectiveCamera(45, window.innerWidth /
 			window.innerHeight, 1, 10000);
-			camera.position.y = 0;
- 			camera.position.z = 0;
+			camera.position.y = 100;
+ 			camera.position.z = 100;
 
 			//Renderar i WebGL om webläsaren stödjer det
 			if (window.WebGLRenderingContext)
@@ -115,7 +132,7 @@
 
 			//Används för styrningen, som i detta fall är FirstPersonControls
 			clock = new THREE.Clock();
-			controls = new THREE.FirstPersonControls(camera);
+			controls = new THREE.FlyControls(camera);
 			controls.movementSpeed = 100;
 			controls.lookSpeed = 0.1;
 		}
@@ -161,16 +178,16 @@
 				{
 					positionStyle    : Type.CUBE,
 					positionBase     : new THREE.Vector3( 0, 0, 0 ),
-					positionSpread   : new THREE.Vector3( 1500, 1500, 1500 ),
+					positionSpread   : new THREE.Vector3( 2500, 2500, 2500 ),
 
 					velocityStyle    : Type.CUBE,
 					velocityBase     : new THREE.Vector3( 0, 0, 0 ),
-					velocitySpread   : new THREE.Vector3( 0.5, 0.5, 0.5 ), 
+					velocitySpread   : new THREE.Vector3( 0, 0, 0 ), 
 					
 					angleBase               : 0,
 					angleSpread             : 720,
 					angleVelocityBase       : 0,
-					angleVelocitySpread     : 4,
+					angleVelocitySpread     : 0,
 
 					particleTexture : THREE.ImageUtils.loadTexture( 'images/spikey.png' ),
 					
@@ -180,8 +197,8 @@
 					colorSpread : new THREE.Vector3(0.00, 0.0, 0.2),
 					opacityBase : 1,
 
-					particlesPerSecond : 30000,
-					particleDeathAge   : 5*60.0,		
+					particlesPerSecond : 60000,
+					particleDeathAge   : 10*60.0,		
 					emitterDeathAge    : 0.1
 				},
 
@@ -224,7 +241,7 @@
 			objects = [];
 
 
-		    for (var i = 0; i < 250; i++) {
+		    for (var i = 0; i < 150; i++) {
 
 			    var planetRadius = Math.ceil((Math.random() * 80));
 			    var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
@@ -262,7 +279,7 @@
 			//Ladda in modeller
 	  	    jsonLoader.load( "./models/island1.js", addModelToScene1 );
 	  	   	jsonLoader.load( "./models/snowWorld1.js", addModelToScene2 );
-	  	   	jsonLoader.load( "./models/planetFarm.js", addModelToScene3 );
+	  	   	jsonLoader.load( "./models/planetFarm1.1.js", addModelToScene3 );
 
 	  	    //jsonLoader.load( "./models/snowWorld1.js", addModelToScene, 50 );
 
