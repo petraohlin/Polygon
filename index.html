@@ -11,6 +11,7 @@
 		<script type='text/javascript' src='./js/tween.min.js'></script>
 		<!-- Laddar in styrningen -->
 		<script src="./js/FirstPersonControls.js"></script>
+		<script src="./js/FlyControls.js"></script>
 		<!-- Laddar in så det enkelt går att spela musik -->
 		<script src="./js/AudioObject.js"></script>
 		<script src="./js/ParticleEngine.js"></script>
@@ -27,7 +28,7 @@
 		    setupThreeJS();
 		    setupStats();
 		    setupWorld();
-		    setupTween();
+		    //setupTween();
 		}; 
 
 		function animation(){
@@ -41,9 +42,25 @@
 					//Var 30:onde blir bouncy
 					if(i % 30 == 0)
 					{
-						object.scale.x = Math.pow(Math.sin(timer * 20), 2) + 0.95;
+						object.scale.x = 0.25*Math.pow(Math.sin(timer * 20), 2) + 1;
 						object.scale.y = object.scale.x;
 						object.scale.z = object.scale.x;
+					}
+					//alla else-if satser ger var 50, 70, 80:onde olika omloppsbanor
+					else if(i % 50 == 0) 
+					{
+						object.position.x += Math.cos( timer * 4 );
+						object.position.y += Math.sin( timer * 4 );
+					}
+					else if(i % 70 == 0) 
+					{
+						object.position.x += Math.cos( timer * 2 );
+						object.position.z += Math.sin( timer * 2 );
+					}
+					else if(i % 80 == 0) 
+					{
+						object.position.z += Math.cos( timer * 7 );
+						object.position.y += Math.sin( timer * 7 );
 					}
 					else 
 					{	
@@ -53,15 +70,9 @@
 							
 				}
 
+			
+
 				
-			var test = objects[100];
-			test.rotation.x = 0;
-			test.rotation.y = 0;
-
-			test.position.x = Math.cos( timer * 4 ) * 100;
-			test.position.y = Math.sin( timer * 8 ) * 100;
-			test.position.z = 10;
-
 	     	particleLight.position.x = Math.sin( timer * 7 ) * 1000;
 			particleLight.position.y = Math.cos( timer * 5 ) * 1000;
 			particleLight.position.z = Math.cos( timer * 3 ) * 1000;
@@ -82,15 +93,32 @@
 	 	}
 
 	 	function update(){
-	 		//Particle field update variables
-			//var dt = clock.getDelta();
-			//engine.update( dt * 0.5 );
+
 	 		sound1.update( camera );
 			sound2.update( camera );
 			sound3.update( camera );
+
+	 		//Particle field update variables
+			var dt = clock.getDelta();
+			engine.update( dt * 0.5 );
+
 			stats.update();
-	 		controls.update(clock.getDelta());
+	 		controls.update(dt);
      		TWEEN.update();
+
+     		if ( camera.position.x > 2000 || camera.position.y > 2000 || camera.position.z > 2000)
+			{
+				camera.position.x = 0;
+				camera.position.y = 0;
+				camera.position.z = -2000;
+			}
+
+			if ( camera.position.x < -2000 || camera.position.y < -2000 || camera.position.z < -2000)
+			{
+				camera.position.x = 0;
+				camera.position.y = 0;
+				camera.position.z = 2000;
+			}
 	 	}
 
 	  	 //Sätter inställningnarna för three.js
@@ -99,7 +127,7 @@
 			
 			camera = new THREE.PerspectiveCamera(45, window.innerWidth /
 			window.innerHeight, 1, 10000);
-			camera.position.y = 10;
+			camera.position.y = 100;
  			camera.position.z = 100;
 
 			//Renderar i WebGL om webläsaren stödjer det
@@ -112,7 +140,7 @@
 
 			//Används för styrningen, som i detta fall är FirstPersonControls
 			clock = new THREE.Clock();
-			controls = new THREE.FirstPersonControls(camera);
+			controls = new THREE.FlyControls(camera);
 			controls.movementSpeed = 100;
 			controls.lookSpeed = 0.1;
 		}
@@ -151,23 +179,23 @@
 			scene.add( skyBox );
 
 			//Particle field
-			/*this.engine = new ParticleEngine();
+			this.engine = new ParticleEngine();
 
 			//Particle field parameters
 			parameters =
 				{
 					positionStyle    : Type.CUBE,
-					positionBase     : new THREE.Vector3( 0, 200, 0 ),
-					positionSpread   : new THREE.Vector3( 600, 400, 600 ),
+					positionBase     : new THREE.Vector3( 0, 0, 0 ),
+					positionSpread   : new THREE.Vector3( 2500, 2500, 2500 ),
 
 					velocityStyle    : Type.CUBE,
 					velocityBase     : new THREE.Vector3( 0, 0, 0 ),
-					velocitySpread   : new THREE.Vector3( 0.5, 0.5, 0.5 ), 
+					velocitySpread   : new THREE.Vector3( 0, 0, 0 ), 
 					
 					angleBase               : 0,
 					angleSpread             : 720,
 					angleVelocityBase       : 0,
-					angleVelocitySpread     : 4,
+					angleVelocitySpread     : 0,
 
 					particleTexture : THREE.ImageUtils.loadTexture( 'images/spikey.png' ),
 					
@@ -177,13 +205,13 @@
 					colorSpread : new THREE.Vector3(0.00, 0.0, 0.2),
 					opacityBase : 1,
 
-					particlesPerSecond : 20000,
-					particleDeathAge   : 60.0,		
+					particlesPerSecond : 60000,
+					particleDeathAge   : 10*60.0,		
 					emitterDeathAge    : 0.1
 				},
 
 			engine.setValues( parameters );
-			engine.initialize();*/
+			engine.initialize();
 
 			//Dimma
 			//scene.fog = new THREE.Fog( 0xffffff, 0.01, 6000 );
@@ -194,7 +222,7 @@
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 			materials.push(new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff, wireframe: true}));
 			materials.push(new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff, wireframe: true}));
-			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, transparent: true, shading: THREE.FlatShading}));
+			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, transparent: false, shading: THREE.FlatShading}));
 			materials.push( new THREE.MeshPhongMaterial( { ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } ) );
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
 			materials.push(new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff, shading: THREE.FlatShading}));
@@ -220,7 +248,8 @@
 
 			objects = [];
 
-		    for (var i = 0; i < 200; i++) {
+
+		    for (var i = 0; i < 150; i++) {
 
 			    var planetRadius = Math.ceil((Math.random() * 80));
 			    var planetGeometry = new THREE.IcosahedronGeometry(planetRadius, 1);
@@ -234,7 +263,7 @@
 
 				planet.position.y = Math.floor(Math.random() * 200 - 100) * 15;
 				planet.position.z = Math.floor(Math.random() * 200 - 100) * 15;
-				planet.position.x = Math.floor(Math.random() * 200 - 100) * 10;
+				planet.position.x = Math.floor(Math.random() * 200 - 100) * 15;
 
 				planet.rotation.x = Math.random() * 200 - 100;
 				planet.rotation.y = Math.random() * 200 - 100;
@@ -249,7 +278,7 @@
 			var cube_geometry = new THREE.BoxGeometry(10, 10, 10);
 			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 			cube = new THREE.Mesh( cube_geometry, material );
-			scene.add(cube);
+			//scene.add(cube);
 
 			//----- MODEL -----
 			//Skapa JSON-inladdare
@@ -258,7 +287,7 @@
 			//Ladda in modeller
 	  	    jsonLoader.load( "./models/island1.js", addModelToScene1 );
 	  	   	jsonLoader.load( "./models/snowWorld1.js", addModelToScene2 );
-	  	   	jsonLoader.load( "./models/planetFarm.js", addModelToScene3 );
+	  	   	jsonLoader.load( "./models/planetFarm1.1.js", addModelToScene3 );
 
 	  	    //jsonLoader.load( "./models/snowWorld1.js", addModelToScene, 50 );
 
@@ -339,8 +368,20 @@
 
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(12.5, 12.5, 12.5);
-		        scene.add( model );
-	    }
+
+		        //Lägger ut x-antal planeter utifrån den inladda modellen
+		        for(var i = 0; i < 3; i++)
+		        {
+		        	var temp = model.clone();
+		        	temp.position.y = Math.floor(Math.random() * 200 - 100) * 15;
+					temp.position.z = Math.floor(Math.random() * 200 - 100) * 15;
+					temp.position.x = Math.floor(Math.random() * 200 - 100) * 15;
+
+					scene.add(temp);
+		        }
+		        
+	    	}
+
 
 	    //Skapar modell i scenen med flat material
 		function addModelToScene2( geometry, materials ) 
@@ -354,8 +395,23 @@
 
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(15, 15, 15);
+
 		        model.position.set(1000,-300,100);
 		        scene.add( model );
+
+		        /*Om vi vill ha flera av samma
+		        model.position.set(700,-200,0);
+
+		       	for(var i = 0; i < 3; i++)
+		        {
+		        	var temp = model.clone();
+		        	temp.position.y = Math.floor(Math.random() * 200 - 100) * 15;
+					temp.position.z = Math.floor(Math.random() * 200 - 100) * 15;
+					temp.position.x = Math.floor(Math.random() * 200 - 100) * 15;
+
+					scene.add(temp);
+		        }*/
+
 	    }
 
 	    //Skapar modell i scenen med flat material
@@ -370,8 +426,10 @@
 
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(15, 15, 15);
+
 		        model.position.set(-700,500,700);
 		        scene.add( model );
+
 	    }
 
 		//Anävnder ramverket Tween för att animera
