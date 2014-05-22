@@ -1,0 +1,22 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#play {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	display: none;
+}
+
+#play_link {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 64px;
+	width: 64px;
+	background: url('../images/play.png') left center no-repeat transparent;
+	cursor: pointer;
+}
