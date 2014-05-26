@@ -13,8 +13,6 @@
 		<!-- Laddar in styrningen -->
 		<script src="./js/FirstPersonControls.js"></script>
 		<script src="./js/FlyControls.js"></script>
-		<!-- Laddar in så det enkelt går att spela musik -->
-		<script src="./js/AudioObject.js"></script>
 		<script src="./js/ParticleEngine.js"></script>
 		<script src="./js/Stats.js"></script>
 		<script src="./js/jquery-2.1.1.min.js"></script>
@@ -26,7 +24,7 @@
 	  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
 	  	function setup() {
 		    setupThreeJS();
-		    setupStats();
+		    //setupStats();
 		    setupWorld();
 		    //setupTween();
 		}; 
@@ -44,16 +42,13 @@
 					//Var 30:onde blir bouncy, beroende på musiken
 					if(i % 30 == 0)
 					{
-						object.scale.x = 0.25*Math.pow(Math.sin(timer * 20), 2) + 1;
-						object.scale.y = object.scale.x;
-						object.scale.z = object.scale.x;
 
 						//Changes cubes dependent on music
 			
 						if(typeof array === 'object' && array.length > 0){
 				
 							var k = 0;
-							var scale = (array[i] + boost) / 30;
+							var scale = (array[i] + boost) / 60;
 							object.scale.z = (scale < 1 ? 1 : scale);
 							object.scale.x = object.scale.z;
 							object.scale.y = object.scale.z;
@@ -114,23 +109,23 @@
 			var dt = clock.getDelta();
 			engine.update( dt * 0.5 );
 
-			stats.update();
+			//stats.update();
 	 		controls.update(dt);
      		TWEEN.update();
 
      		//Spärrar kamera att ta sig utanför skybox
-     		if ( camera.position.x > 2000 || camera.position.y > 2000 || camera.position.z > 2000)
+     		if ( camera.position.x > 4000 || camera.position.y > 4000 || camera.position.z > 4000)
 			{
 				camera.position.x = 0;
 				camera.position.y = 0;
-				camera.position.z = -2000;
+				camera.position.z = -4000;
 			}
 
-			if ( camera.position.x < -2000 || camera.position.y < -2000 || camera.position.z < -2000)
+			if ( camera.position.x < -4000 || camera.position.y < -4000 || camera.position.z < -4000)
 			{
 				camera.position.x = 0;
 				camera.position.y = 0;
-				camera.position.z = 2000;
+				camera.position.z = 4000;
 			}
 	 	}
 
@@ -141,7 +136,7 @@
 			camera = new THREE.PerspectiveCamera(45, window.innerWidth /
 			window.innerHeight, 1, 10000);
 			camera.position.y = 100;
- 			camera.position.z = 100;
+ 			camera.position.z = 2000;
 
 			//Renderar i WebGL om webläsaren stödjer det
 			if (window.WebGLRenderingContext)
@@ -174,12 +169,12 @@
 	   	//Definerar världen och objekt som finns i den
 	   	function setupWorld() {
 
-	   		//Skybox
+			//----- SKYBOX -----
 	   		//Laddar in sex bilder och applicerar som textur på 5000x5000x5000-kub
 	   		var imagePrefix = "skybox/space-";
 			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
 			var imageSuffix = ".jpg";
-			var skyGeometry = new THREE.BoxGeometry( 5000, 5000, 5000 );	
+			var skyGeometry = new THREE.BoxGeometry( 8000, 8000, 8000 );	
 			 
 			var skyMaterialArray = [];
 			for (var i = 0; i < 6; i++)
@@ -219,15 +214,13 @@
 					opacityBase : 1,
 
 					particlesPerSecond : 60000,
-					particleDeathAge   : 10*60.0,		
+					particleDeathAge   : 20*60.0,		
 					emitterDeathAge    : 0.1
 				},
 
 			engine.setValues( parameters );
 			engine.initialize();
 
-			//Dimma
-			//scene.fog = new THREE.Fog( 0xffffff, 0.01, 6000 );
 
 			//Array med de olika materialen som sfärerna kan få
 			var materials = [];
@@ -287,39 +280,6 @@
 				scene.add(planet);
 			}
 
-			//Ett kub-objekt för att examplifiera animationen
-			var cube_geometry = new THREE.BoxGeometry(10, 10, 10);
-			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-			cube = new THREE.Mesh( cube_geometry, material );
-			//scene.add(cube);
-
-
-			//Skapar kuber som beror av musiken
-			// cubes = new Array();
-			
-			// var i = 0;
-			// for(var x = 0; x < 30; x += 2) {
-			// 	var j = 0;
-			// 	cubes[i] = new Array();
-			// 	for(var y = 0; y < 30; y += 2) {
-			// 		var geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-					
-			// 		var material = new THREE.MeshPhongMaterial({
-			// 			color: randomFairColor(),
-			// 			ambient: 0x808080,
-			// 			specular: 0xffffff,
-			// 			shininess: 20,
-			// 			reflectivity: 5.5 
-			// 		});
-					
-			// 		cubes[i][j] = new THREE.Mesh(geometry, material);
-			// 		cubes[i][j].position = new THREE.Vector3(x, y, 0);
-					
-			// 		scene.add(cubes[i][j]);
-			// 		j++;
-			// 	}
-			// 	i++;
-			// }
 
 			//----- MODEL -----
 			//Skapa JSON-inladdare
@@ -341,26 +301,25 @@
 			soundmesh1.position.set( 0, 0, 0 );
 			scene.add( soundmesh1 );
 
-			sound1 = new Sound( [ './music/winter.mp3', './music/winter.mp3' ], 700, 1 );
+			sound1 = new Sound( [ './music/NatureSound.ogg', './music/NatureSound.ogg' ], 700, 1 );
 			sound1.position.copy( soundmesh1.position );
-			//sound1.play();
-
+			sound1.play(); 
 
 			soundmesh2 = new THREE.Mesh( planetGeometry, planetMaterial );
 			soundmesh2.position.set( 1000,-300,100);
 			scene.add( soundmesh2 );
 
-			sound2 = new Sound( [ './music/winter.mp3', './music/winter.mp3' ], 700, 1 );
+			sound2 = new Sound( [ './music/FrozenSound.mp3', './music/FrozenSound.mp3' ], 700, 1 );
 			sound2.position.copy( soundmesh2.position );
-			//sound2.play();
+			sound2.play();
 
 			soundmesh3 = new THREE.Mesh( planetGeometry, planetMaterial );
-			soundmesh3.position.set(700,500,700);
+			soundmesh3.position.set(-700,500,700);
 			scene.add( soundmesh3 );
 
-			sound3 = new Sound( [ './music/winter.mp3', './music/winter.mp3' ], 700, 1 );
+			sound3 = new Sound( [ './music/FarmSound.mp3', './music/FarmSound.mp3' ], 700, 1 );
 			sound3.position.copy( soundmesh3.position );
-			//sound3.play();
+			sound3.play(); 
 
 
   			//----- LJUS -----
