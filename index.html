@@ -26,7 +26,7 @@
 	  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
 	  	function setup() {
 		    setupThreeJS();
-		    setupStats();
+		    //setupStats();
 		    setupWorld();
 		    //setupTween();
 		}; 
@@ -114,7 +114,7 @@
 			var dt = clock.getDelta();
 			engine.update( dt * 0.5 );
 
-			stats.update();
+			//stats.update();
 	 		controls.update(dt);
      		TWEEN.update();
 
