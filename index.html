@@ -116,18 +116,18 @@
      		TWEEN.update();
 
      		//Spärrar kamera att ta sig utanför skybox
-     		if ( camera.position.x > 2000 || camera.position.y > 2000 || camera.position.z > 2000)
+     		if ( camera.position.x > 4000 || camera.position.y > 4000 || camera.position.z > 4000)
 			{
 				camera.position.x = 0;
 				camera.position.y = 0;
-				camera.position.z = -2000;
+				camera.position.z = -4000;
 			}
 
-			if ( camera.position.x < -2000 || camera.position.y < -2000 || camera.position.z < -2000)
+			if ( camera.position.x < -4000 || camera.position.y < -4000 || camera.position.z < -4000)
 			{
 				camera.position.x = 0;
 				camera.position.y = 0;
-				camera.position.z = 2000;
+				camera.position.z = 4000;
 			}
 	 	}
 
@@ -138,7 +138,7 @@
 			camera = new THREE.PerspectiveCamera(45, window.innerWidth /
 			window.innerHeight, 1, 10000);
 			camera.position.y = 100;
- 			camera.position.z = 100;
+ 			camera.position.z = 2000;
 
 			//Renderar i WebGL om webläsaren stödjer det
 			if (window.WebGLRenderingContext)
@@ -176,7 +176,7 @@
 	   		var imagePrefix = "skybox/space-";
 			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
 			var imageSuffix = ".jpg";
-			var skyGeometry = new THREE.BoxGeometry( 5000, 5000, 5000 );	
+			var skyGeometry = new THREE.BoxGeometry( 8000, 8000, 8000 );	
 			 
 			var skyMaterialArray = [];
 			for (var i = 0; i < 6; i++)
@@ -216,7 +216,7 @@
 					opacityBase : 1,
 
 					particlesPerSecond : 60000,
-					particleDeathAge   : 10*60.0,		
+					particleDeathAge   : 20*60.0,		
 					emitterDeathAge    : 0.1
 				},
 
