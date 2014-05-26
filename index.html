@@ -13,8 +13,6 @@
 		<!-- Laddar in styrningen -->
 		<script src="./js/FirstPersonControls.js"></script>
 		<script src="./js/FlyControls.js"></script>
-		<!-- Laddar in så det enkelt går att spela musik -->
-		<script src="./js/AudioObject.js"></script>
 		<script src="./js/ParticleEngine.js"></script>
 		<script src="./js/Stats.js"></script>
 		<script src="./js/jquery-2.1.1.min.js"></script>
@@ -28,7 +26,7 @@
 		    setupThreeJS();
 		    //setupStats();
 		    setupWorld();
-		    //setupTween();
+		    
 		}; 
 
 		function animation(){
@@ -171,7 +169,7 @@
 	   	//Definerar världen och objekt som finns i den
 	   	function setupWorld() {
 
-	   		//Skybox
+			//----- SKYBOX -----
 	   		//Laddar in sex bilder och applicerar som textur på 5000x5000x5000-kub
 	   		var imagePrefix = "skybox/space-";
 			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
@@ -223,8 +221,6 @@
 			engine.setValues( parameters );
 			engine.initialize();
 
-			//Dimma
-			//scene.fog = new THREE.Fog( 0xffffff, 0.01, 6000 );
 
 			//Array med de olika materialen som sfärerna kan få
 			var materials = [];
@@ -284,39 +280,6 @@
 				scene.add(planet);
 			}
 
-			//Ett kub-objekt för att examplifiera animationen
-			var cube_geometry = new THREE.BoxGeometry(10, 10, 10);
-			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-			cube = new THREE.Mesh( cube_geometry, material );
-			//scene.add(cube);
-
-
-			//Skapar kuber som beror av musiken
-			// cubes = new Array();
-			
-			// var i = 0;
-			// for(var x = 0; x < 30; x += 2) {
-			// 	var j = 0;
-			// 	cubes[i] = new Array();
-			// 	for(var y = 0; y < 30; y += 2) {
-			// 		var geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-					
-			// 		var material = new THREE.MeshPhongMaterial({
-			// 			color: randomFairColor(),
-			// 			ambient: 0x808080,
-			// 			specular: 0xffffff,
-			// 			shininess: 20,
-			// 			reflectivity: 5.5 
-			// 		});
-					
-			// 		cubes[i][j] = new THREE.Mesh(geometry, material);
-			// 		cubes[i][j].position = new THREE.Vector3(x, y, 0);
-					
-			// 		scene.add(cubes[i][j]);
-			// 		j++;
-			// 	}
-			// 	i++;
-			// }
 
 			//----- MODEL -----
 			//Skapa JSON-inladdare
@@ -334,30 +297,29 @@
 			// Soundsfärer och soundvariabler kopplade till dessa
 			// Svärerna har samma koordinater som världarna
 
-			var soundmesh1 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh1 = new THREE.Mesh( planetGeometry, planetMaterial );
 			soundmesh1.position.set( 0, 0, 0 );
 			scene.add( soundmesh1 );
 
-			sound1 = new Sound( [ 'music/mys.mp3', 'music/mys.mp3' ], 700, 1 );
+			sound1 = new Sound( [ './music/NatureSound.ogg', './music/NatureSound.ogg' ], 700, 1 );
 			sound1.position.copy( soundmesh1.position );
-			//sound1.play();
+			sound1.play(); 
 
-
-			var soundmesh2 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh2 = new THREE.Mesh( planetGeometry, planetMaterial );
 			soundmesh2.position.set( 1000,-300,100);
 			scene.add( soundmesh2 );
 
-			sound2 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
+			sound2 = new Sound( [ './music/FrozenSound.mp3', './music/FrozenSound.mp3' ], 700, 1 );
 			sound2.position.copy( soundmesh2.position );
-			//sound2.play();
+			sound2.play();
 
-			var soundmesh3 = new THREE.Mesh( planetGeometry, planetMaterial );
-			soundmesh3.position.set(700,500,700);
+			soundmesh3 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh3.position.set(-700,500,700);
 			scene.add( soundmesh3 );
 
-			sound3 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
+			sound3 = new Sound( [ './music/FarmSound.mp3', './music/FarmSound.mp3' ], 700, 1 );
 			sound3.position.copy( soundmesh3.position );
-			//sound3.play();
+			sound3.play(); 
 
 
   			//----- LJUS -----
@@ -461,48 +423,6 @@
 
 	    }
 
-	    //Sätter random-färger på kuber
-	    function randomFairColor() {
-			var min = 64;
-			var max = 224;
-			var r = (Math.floor(Math.random() * (max - min + 1)) + min) * 65536;
-			var g = (Math.floor(Math.random() * (max - min + 1)) + min) * 256;
-			var b = (Math.floor(Math.random() * (max - min + 1)) + min);
-			return r + g + b;
-		}
-
-		//Anävnder ramverket Tween för att animera
-		function setupTween()
-		{
-			var update	= function(){
-				cube.position.x = current.x;
-			}
-			var current	= { x: 0 };
-
-			//Ta bort eventuella äldre tweens
-			TWEEN.removeAll();
-
-			//Sätter hur animationen ska se ut.
-			var easing	= TWEEN.Easing.Sinusoidal.InOut;
-
-			//Animation åt ena hållet
-			var tweenHead	= new TWEEN.Tween(current)
-			.to({x: 100}, 2000)
-			.easing(easing)
-			.onUpdate(update);
-
-			//Animation åt andra hållet
-			var tweenBack	= new TWEEN.Tween(current)
-			.to({x: -100}, 2000)
-			.easing(easing)
-			.onUpdate(update);
-
-			//Kedjar de båda animationerna
-			tweenHead.chain(tweenBack);
-			tweenBack.chain(tweenHead);
-
-			tweenHead.start();
-		}
 
 		setup();
 		animation();
