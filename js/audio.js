@@ -74,7 +74,11 @@ request.onload = function() {
 			clearInterval(interval);
 			
 			// popup
-			$('body').append($('<div onclick="play();" id="play" style="width: ' + $(window).width() + 'px; height: ' + $(window).height() + 'px;"><div id="play_link"></div></div>'));
+			$('body').append($('<div onclick="play();" id="play" style="width: ' + $(window).width() + 'px; height: ' + $(window).height() + 'px;"><div id="play_title"></div><div id="play_instructions"></div><div id="play_link"></div></div>'));
+			$('#play_title').css('top', ($(window).height() / 5 - $('#play_title').height() / 5) + 'px');
+			$('#play_title').css('left', ($(window).width() / 2 - $('#play_title').width() / 2) + 'px');
+			$('#play_instructions').css('top', ($(window).height() / 1.3 - $('#play_instructions').height() / 1.3) + 'px');
+			$('#play_instructions').css('left', ($(window).width() / 2 - $('#play_instructions').width() / 2) + 'px');
 			$('#play_link').css('top', ($(window).height() / 2 - $('#play_link').height() / 2) + 'px');
 			$('#play_link').css('left', ($(window).width() / 2 - $('#play_link').width() / 2) + 'px');
 			$('#play').fadeIn();

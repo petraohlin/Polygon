@@ -7,16 +7,36 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: rgba(0, 0, 0, 0.7);
 	display: none;
+}
+
+#play_title{
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 111;
+	width: 749px;
+	background: url('../images/title.png') left center no-repeat transparent;
+	cursor: pointer;
+}
+
+#play_instructions {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 47;
+	width: 782px;
+	background: url('../images/instructions.png') left center no-repeat transparent;
+	cursor: pointer;
 }
 
 #play_link {
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 64px;
-	width: 64px;
-	background: url('../images/play.png') left center no-repeat transparent;
+	height: 250;
+	width: 255px;
+	background: url('../images/lets_go.png') left center no-repeat transparent;
 	cursor: pointer;
 }
