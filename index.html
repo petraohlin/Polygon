@@ -407,16 +407,7 @@
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(12.5, 12.5, 12.5);
 
-		        //Lägger ut x-antal planeter utifrån den inladda modellen
-		        for(var i = 0; i < 3; i++)
-		        {
-		        	var temp = model.clone();
-		        	temp.position.y = Math.floor(Math.random() * 200 - 100) * 15;
-					temp.position.z = Math.floor(Math.random() * 200 - 100) * 15;
-					temp.position.x = Math.floor(Math.random() * 200 - 100) * 15;
-
-					scene.add(temp);
-		        }
+		       scene.add(model);
 		        
 	    	}
 
