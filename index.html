@@ -334,28 +334,28 @@
 			// Soundsfärer och soundvariabler kopplade till dessa
 			// Svärerna har samma koordinater som världarna
 
-			var soundmesh1 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh1 = new THREE.Mesh( planetGeometry, planetMaterial );
 			soundmesh1.position.set( 0, 0, 0 );
 			scene.add( soundmesh1 );
 
-			sound1 = new Sound( [ 'music/mys.mp3', 'music/mys.mp3' ], 700, 1 );
+			sound1 = new Sound( [ './music/winter.mp3', './music/winter.mp3' ], 700, 1 );
 			sound1.position.copy( soundmesh1.position );
 			sound1.play();
 
 
-			var soundmesh2 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh2 = new THREE.Mesh( planetGeometry, planetMaterial );
 			soundmesh2.position.set( 1000,-300,100);
 			scene.add( soundmesh2 );
 
-			sound2 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
+			sound2 = new Sound( [ './music/winter.mp3', './music/winter.mp3' ], 700, 1 );
 			sound2.position.copy( soundmesh2.position );
 			sound2.play();
 
-			var soundmesh3 = new THREE.Mesh( planetGeometry, planetMaterial );
+			soundmesh3 = new THREE.Mesh( planetGeometry, planetMaterial );
 			soundmesh3.position.set(700,500,700);
 			scene.add( soundmesh3 );
 
-			sound3 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
+			sound3 = new Sound( [ './music/winter.mp3', './music/winter.mp3' ], 700, 1 );
 			sound3.position.copy( soundmesh3.position );
 			sound3.play();
 
@@ -407,8 +407,10 @@
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(12.5, 12.5, 12.5);
 
+		        scene.add( model );
+
 		        //Lägger ut x-antal planeter utifrån den inladda modellen
-		        for(var i = 0; i < 3; i++)
+		        /*for(var i = 0; i < 3; i++)
 		        {
 		        	var temp = model.clone();
 		        	temp.position.y = Math.floor(Math.random() * 200 - 100) * 15;
@@ -416,7 +418,7 @@
 					temp.position.x = Math.floor(Math.random() * 200 - 100) * 15;
 
 					scene.add(temp);
-		        }
+		        }*/
 		        
 	    	}
 
