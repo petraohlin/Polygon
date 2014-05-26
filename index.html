@@ -39,13 +39,28 @@
 		     	for ( var i = 0, l = objects.length; i < l; i ++ ) {
 
 					var object = objects[i];
-					//Var 30:onde blir bouncy
+
+
+					//Var 30:onde blir bouncy, beroende på musiken
 					if(i % 30 == 0)
 					{
 						object.scale.x = 0.25*Math.pow(Math.sin(timer * 20), 2) + 1;
 						object.scale.y = object.scale.x;
 						object.scale.z = object.scale.x;
+
+						//Changes cubes dependent on music
+			
+						if(typeof array === 'object' && array.length > 0){
+				
+							var k = 0;
+							var scale = (array[i] + boost) / 30;
+							object.scale.z = (scale < 1 ? 1 : scale);
+							object.scale.x = object.scale.z;
+							object.scale.y = object.scale.z;
+							k += (k < array.length ? 1 : 0);
+						}
 					}
+
 					//alla else-if satser ger var 50, 70, 80:onde olika omloppsbanor
 					else if(i % 50 == 0) 
 					{
@@ -77,18 +92,6 @@
 			pointLight.position.x = particleLight.position.x;
 			pointLight.position.y = particleLight.position.y;
 			pointLight.position.z = particleLight.position.z;
-
-			//Changes cubes dependent on music
-			if(typeof array === 'object' && array.length > 0){
-				var k = 0;
-				for(var i = 0; i < cubes.length; i++) {
-					for(var j = 0; j < cubes[i].length; j++) {
-						var scale = (array[k] + boost) / 30;
-						cubes[i][j].scale.z = (scale < 1 ? 1 : scale);
-						k += (k < array.length ? 1 : 0);
-					}
-				}
-			}
 
 			render();
 			update();
@@ -196,7 +199,7 @@
 				{
 					positionStyle    : Type.CUBE,
 					positionBase     : new THREE.Vector3( 0, 0, 0 ),
-					positionSpread   : new THREE.Vector3( 2500, 2500, 2500 ),
+					positionSpread   : new THREE.Vector3( 2000, 2000, 2000 ),
 
 					velocityStyle    : Type.CUBE,
 					velocityBase     : new THREE.Vector3( 0, 0, 0 ),
@@ -292,31 +295,31 @@
 
 
 			//Skapar kuber som beror av musiken
-			cubes = new Array();
+			// cubes = new Array();
 			
-			var i = 0;
-			for(var x = 0; x < 30; x += 2) {
-				var j = 0;
-				cubes[i] = new Array();
-				for(var y = 0; y < 30; y += 2) {
-					var geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+			// var i = 0;
+			// for(var x = 0; x < 30; x += 2) {
+			// 	var j = 0;
+			// 	cubes[i] = new Array();
+			// 	for(var y = 0; y < 30; y += 2) {
+			// 		var geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
 					
-					var material = new THREE.MeshPhongMaterial({
-						color: randomFairColor(),
-						ambient: 0x808080,
-						specular: 0xffffff,
-						shininess: 20,
-						reflectivity: 5.5 
-					});
+			// 		var material = new THREE.MeshPhongMaterial({
+			// 			color: randomFairColor(),
+			// 			ambient: 0x808080,
+			// 			specular: 0xffffff,
+			// 			shininess: 20,
+			// 			reflectivity: 5.5 
+			// 		});
 					
-					cubes[i][j] = new THREE.Mesh(geometry, material);
-					cubes[i][j].position = new THREE.Vector3(x, y, 0);
+			// 		cubes[i][j] = new THREE.Mesh(geometry, material);
+			// 		cubes[i][j].position = new THREE.Vector3(x, y, 0);
 					
-					scene.add(cubes[i][j]);
-					j++;
-				}
-				i++;
-			}
+			// 		scene.add(cubes[i][j]);
+			// 		j++;
+			// 	}
+			// 	i++;
+			// }
 
 			//----- MODEL -----
 			//Skapa JSON-inladdare
@@ -340,7 +343,7 @@
 
 			sound1 = new Sound( [ 'music/mys.mp3', 'music/mys.mp3' ], 700, 1 );
 			sound1.position.copy( soundmesh1.position );
-			sound1.play();
+			//sound1.play();
 
 
 			var soundmesh2 = new THREE.Mesh( planetGeometry, planetMaterial );
@@ -349,7 +352,7 @@
 
 			sound2 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
 			sound2.position.copy( soundmesh2.position );
-			sound2.play();
+			//sound2.play();
 
 			var soundmesh3 = new THREE.Mesh( planetGeometry, planetMaterial );
 			soundmesh3.position.set(700,500,700);
@@ -357,7 +360,7 @@
 
 			sound3 = new Sound( [ './music/cool.mp3', './music/cool.mp3' ], 700, 1 );
 			sound3.position.copy( soundmesh3.position );
-			sound3.play();
+			//sound3.play();
 
 
   			//----- LJUS -----
