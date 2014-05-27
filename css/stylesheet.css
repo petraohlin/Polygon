@@ -15,7 +15,7 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 111;
+	height: 56;
 	width: 749px;
 	background: url('../images/title.png') left center no-repeat transparent;
 	cursor: pointer;
@@ -25,8 +25,8 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 47;
-	width: 782px;
+	height: 24;
+	width: 391px;
 	background: url('../images/instructions.png') left center no-repeat transparent;
 	cursor: pointer;
 }
@@ -35,8 +35,8 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 250;
-	width: 255px;
+	height: 128;
+	width: 125px;
 	background: url('../images/lets_go.png') left center no-repeat transparent;
 	cursor: pointer;
 }
