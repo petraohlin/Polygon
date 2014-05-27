@@ -173,7 +173,7 @@
 	   		//Laddar in sex bilder och applicerar som textur på 5000x5000x5000-kub
 	   		var imagePrefix = "skybox/space-";
 			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-			var imageSuffix = ".png";
+			var imageSuffix = ".jpg";
 			var skyGeometry = new THREE.BoxGeometry( 8000, 8000, 8000 );	
 			 
 			var skyMaterialArray = [];
@@ -194,7 +194,7 @@
 				{
 					positionStyle    : Type.CUBE,
 					positionBase     : new THREE.Vector3( 0, 0, 0 ),
-					positionSpread   : new THREE.Vector3( 3000, 3000, 3000 ),
+					positionSpread   : new THREE.Vector3( 2000, 2000, 2000 ),
 
 					velocityStyle    : Type.CUBE,
 					velocityBase     : new THREE.Vector3( 0, 0, 0 ),
@@ -207,7 +207,7 @@
 
 					particleTexture : THREE.ImageUtils.loadTexture( 'images/spikey.png' ),
 					
-					sizeBase    : 10.0,
+					sizeBase    : 20.0,
 					sizeSpread  : 2.0,				
 					colorBase   : new THREE.Vector3(0.15, 1.0, 0.9), // H,S,L
 					colorSpread : new THREE.Vector3(0.00, 0.0, 0.2),
