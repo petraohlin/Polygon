@@ -173,7 +173,7 @@
 	   		//Laddar in sex bilder och applicerar som textur på 5000x5000x5000-kub
 	   		var imagePrefix = "skybox/space-";
 			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-			var imageSuffix = ".jpg";
+			var imageSuffix = ".png";
 			var skyGeometry = new THREE.BoxGeometry( 8000, 8000, 8000 );	
 			 
 			var skyMaterialArray = [];
@@ -194,7 +194,7 @@
 				{
 					positionStyle    : Type.CUBE,
 					positionBase     : new THREE.Vector3( 0, 0, 0 ),
-					positionSpread   : new THREE.Vector3( 2000, 2000, 2000 ),
+					positionSpread   : new THREE.Vector3( 3000, 3000, 3000 ),
 
 					velocityStyle    : Type.CUBE,
 					velocityBase     : new THREE.Vector3( 0, 0, 0 ),
@@ -213,7 +213,7 @@
 					colorSpread : new THREE.Vector3(0.00, 0.0, 0.2),
 					opacityBase : 1,
 
-					particlesPerSecond : 60000,
+					particlesPerSecond : 100000,
 					particleDeathAge   : 20*60.0,		
 					emitterDeathAge    : 0.1
 				},
@@ -298,7 +298,7 @@
 			// Svärerna har samma koordinater som världarna
 
 			soundmesh1 = new THREE.Mesh( planetGeometry, planetMaterial );
-			soundmesh1.position.set( 0, 0, 0 );
+			soundmesh1.position.set( 0, 0, -300 );
 			scene.add( soundmesh1 );
 
 			sound1 = new Sound( [ './music/NatureSound.ogg', './music/NatureSound.ogg' ], 700, 1 );
@@ -368,7 +368,7 @@
 
 		        model = new THREE.Mesh( geometry, material );
 		        model.scale.set(12.5, 12.5, 12.5);
-
+		        model.position.set(0, 0, -300);
 		       scene.add(model);
 		        
 	    	}
