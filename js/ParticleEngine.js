@@ -277,7 +277,7 @@ ParticleEngine.prototype.setValues = function( parameters )
 		transparent: true,  alphaTest: 0.5, // if having transparency issues, try including: alphaTest: 0.5, 
 		blending: THREE.NormalBlending, depthTest: true
 	});
-	this.particleMesh = new THREE.ParticleSystem();
+	this.particleMesh = new THREE.PointCloud();
 }
 	
 // helper functions for randomization
@@ -356,7 +356,7 @@ ParticleEngine.prototype.initialize = function()
 	if ( this.blendStyle != THREE.NormalBlending) 
 		this.particleMaterial.depthTest = false;
 	
-	this.particleMesh = new THREE.ParticleSystem( this.particleGeometry, this.particleMaterial );
+	this.particleMesh = new THREE.PointCloud( this.particleGeometry, this.particleMaterial );
 	this.particleMesh.dynamic = true;
 	this.particleMesh.sortParticles = true;
 	scene.add( this.particleMesh );
