@@ -7,7 +7,7 @@
 	<body>
 	<div id="info">Loading<span id="loading_dots"></span></div>
 		<!-- Laddar in three.js -->
-		<script src="https://rawgithub.com/mrdoob/three.js/master/build/three.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script>
 		<!-- Laddar in tween-biblioteket -->
 		<script type='text/javascript' src='./js/tween.min.js'></script>
 		<!-- Laddar in styrningen -->
@@ -173,7 +173,7 @@
 	   		//Laddar in sex bilder och applicerar som textur på 5000x5000x5000-kub
 	   		var imagePrefix = "skybox/space-";
 			var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-			var imageSuffix = ".jpg";
+			var imageSuffix = ".png";
 			var skyGeometry = new THREE.BoxGeometry( 8000, 8000, 8000 );	
 			 
 			var skyMaterialArray = [];
@@ -194,7 +194,7 @@
 				{
 					positionStyle    : Type.CUBE,
 					positionBase     : new THREE.Vector3( 0, 0, 0 ),
-					positionSpread   : new THREE.Vector3( 2000, 2000, 2000 ),
+					positionSpread   : new THREE.Vector3( 3000, 3000, 3000 ),
 
 					velocityStyle    : Type.CUBE,
 					velocityBase     : new THREE.Vector3( 0, 0, 0 ),

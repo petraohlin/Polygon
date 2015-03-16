@@ -40,7 +40,7 @@ request.onload = function() {
 				return;
 			}
 			
-			sourceJs = context.createJavaScriptNode(2048);
+			sourceJs = context.createScriptProcessor(2048);
 			sourceJs.buffer = buffer;
 			sourceJs.connect(context.destination);
 			analyser = context.createAnalyser();
@@ -110,7 +110,7 @@ function play() {
 	$('#play').fadeOut('normal', function() {
 		$(this).remove();
 	});
-	source.noteOn(0);
+	source.start(0);
 }
 
 $(window).resize(function() {
