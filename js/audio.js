@@ -16,17 +16,8 @@ var interval = window.setInterval(function() {
 	}
 }, 500);
 
-try {
-	if(typeof webkitAudioContext === 'function') {
-		context = new webkitAudioContext();
-	}
-	else {
-		context = new AudioContext();
-	}
-}
-catch(e) {
-	$('#info').text('Web Audio API is not supported in this browser');
-}
+var context = new (window.AudioContext || window.webkitAudioContext)();
+
 var request = new XMLHttpRequest();
 request.open("GET", url, true);
 request.responseType = "arraybuffer";
