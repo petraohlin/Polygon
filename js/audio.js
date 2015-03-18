@@ -65,7 +65,7 @@ request.onload = function() {
 			clearInterval(interval);
 			
 			// popup
-			$('body').append($('<div onclick="play();" id="play" style="width: ' + $(window).width() + 'px; height: ' + $(window).height() + 'px;"><div id="play_title"></div><div id="play_instructions"></div><div id="play_link"></div></div><div id="soundcloudimg"></div>'));
+			$('body').append($('<div onclick="play();" id="play" style="width: ' + $(window).width() + 'px; height: ' + $(window).height() + 'px;"><div id="play_title"></div><div id="play_instructions"></div><div id="play_link"></div></div><a href="https://soundcloud.com/"><div id="soundcloudimg"></div></a>'));
 			$('#play_title').css('top', ($(window).height() / 5 - $('#play_title').height() / 5) + 'px');
 			$('#play_title').css('left', ($(window).width() / 2 - $('#play_title').width() / 2) + 'px');
 			$('#play_instructions').css('top', ($(window).height() / 1.3 - $('#play_instructions').height() / 1.3) + 'px');
