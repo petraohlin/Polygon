@@ -45,3 +45,20 @@ canvas {
 	background: url('../images/lets_go.png') left center no-repeat transparent;
 	cursor: pointer;
 }
+
+
+#soundcloudimg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 60;
+	width: 100px;
+	background: url('../images/sc_st_white_100x60.png') left center no-repeat transparent;
+	cursor: pointer;
+}
+
+#info{
+	color: white;
+	font-family: Arial;
+	background-color: black;
+}
