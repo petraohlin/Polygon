@@ -18,8 +18,23 @@
 	<body>
 		<div id="info">Loading<span id="loading_dots"></span></div>
 		<script>
+	
 
 			var camera, scene, stats, renderer, planets, controls, clock, cube, cubes, soundmesh1, soundmesh2, soundmesh3, sound1, sound2, sound3;
+
+			var time = new Date().getTime();
+		     $(document.body).bind("mousemove keypress", function(e) {
+		         time = new Date().getTime();
+		     });
+
+		     function refresh() {
+		         if(new Date().getTime() - time >= 60000) 
+		             window.location.reload(true);
+		         else 
+		             setTimeout(refresh, 10000);
+		     }
+
+		     setTimeout(refresh, 10000);
 	  
 		  	//Anropar funktioner för att bygga världen samt Three.js-inställningnarna, för att sedan rendera
 		  	function setup() {
